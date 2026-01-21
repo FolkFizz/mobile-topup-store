@@ -40,20 +40,20 @@ const swaggerSpec = swaggerJsdoc({
         Transaction: {
           type: 'object',
           properties: {
-            id: { type: 'string', example: 'TXN-1700000000000' },
+            id: { type: 'integer', example: 1 },
+            txn_id: { type: 'string', example: 'TXN-1700000000000' },
             email: { type: 'string', example: 'qa@example.com' },
-            phone: { type: 'string', example: '0891234567' },
-            package: { type: 'string', example: '5G Max Speed' },
-            paymentMethod: {
+            package_name: { type: 'string', example: '5G Max Speed' },
+            payment_method: {
               type: 'string',
               enum: ['credit_card', 'wallet', 'qr'],
               example: 'credit_card',
             },
             amount: { type: 'number', example: 1199 },
             status: { type: 'string', example: 'SUCCESS' },
-            timestamp: { type: 'string', example: '2026-01-21 11:05:00' },
+            created_at: { type: 'string', example: '2026-01-21 11:05:00' },
           },
-          required: ['id', 'email', 'phone', 'package', 'paymentMethod', 'amount', 'status', 'timestamp'],
+          required: ['id', 'txn_id', 'email', 'package_name', 'payment_method', 'amount', 'status', 'created_at'],
         },
         TopUpRequest: {
           type: 'object',
@@ -160,30 +160,16 @@ function getThaiTimestamp() {
   return raw.replace('T', ' ').replace(',', '');
 }
 
-function createTransaction({ phone, email, packageName, paymentMethod, amount, status }) {
+function createTransaction({ email, packageName, paymentMethod, amount, status }) {
   const timestamp = getThaiTimestamp();
   return {
     id: 'TXN-' + Date.now(),
     email,
-    phone,
-    package: packageName,
+    packageName,
     paymentMethod,
     amount,
     status,
-    timestamp,
-  };
-}
-
-function mapTransactionRow(row) {
-  return {
-    id: row.id,
-    email: row.email,
-    phone: row.phone || '',
-    package: row.package,
-    paymentMethod: row.paymentMethod,
-    amount: row.amount === null || row.amount === undefined ? null : Number(row.amount),
-    status: row.status,
-    timestamp: row.timestamp,
+    createdAt: timestamp,
   };
 }
 
@@ -207,11 +193,9 @@ async function initDb() {
       created_at TEXT
     );
   `;
-  const addPhoneSql = 'ALTER TABLE transactions ADD COLUMN IF NOT EXISTS phone TEXT;';
 
   await pool.query(createUsersSql);
   await pool.query(createTransactionsSql);
-  await pool.query(addPhoneSql);
 }
 
 /**
@@ -233,13 +217,7 @@ async function initDb() {
  *             schema:
  *               $ref: '#/components/schemas/BasicResponse'
  *       '400':
- *         description: Invalid payload
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       '409':
- *         description: Email already exists
+ *         description: Invalid payload or email already exists
  *         content:
  *           application/json:
  *             schema:
@@ -258,7 +236,7 @@ app.post('/api/register', async (req, res) => {
     return res.status(201).json({ status: 'success', message: 'Created' });
   } catch (error) {
     if (error && error.code === '23505') {
-      return res.status(409).json({ status: 'error', message: 'Email already registered' });
+      return res.status(400).json({ status: 'error', message: 'Email already registered' });
     }
     console.error('Register failed', error);
     return res.status(500).json({ status: 'error', message: 'Database error' });
@@ -305,13 +283,16 @@ app.post('/api/login', async (req, res) => {
   }
 
   try {
-    const result = await pool.query('SELECT id, email FROM users WHERE email = $1 AND password = $2', [
-      email,
-      password,
-    ]);
+    const result = await pool.query('SELECT password FROM users WHERE email = $1', [email]);
     if (result.rowCount === 0) {
       return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
     }
+
+    const storedPassword = String(result.rows[0].password || '');
+    if (storedPassword !== password) {
+      return res.status(401).json({ status: 'error', message: 'Invalid credentials' });
+    }
+
     return res.status(200).json({ token: 'mock-token' });
   } catch (error) {
     console.error('Login failed', error);
@@ -509,7 +490,6 @@ app.post('/api/topup', (req, res) => {
 
   const respondSuccess = async () => {
     const transaction = createTransaction({
-      phone: phoneValue,
       email: emailValue,
       packageName: packageValue,
       paymentMethod: methodValue,
@@ -521,19 +501,18 @@ app.post('/api/topup', (req, res) => {
       await pool.query(
         `
           INSERT INTO transactions
-            (txn_id, email, phone, package_name, payment_method, amount, status, created_at)
+            (txn_id, email, package_name, payment_method, amount, status, created_at)
           VALUES
-            ($1, $2, $3, $4, $5, $6, $7, $8)
+            ($1, $2, $3, $4, $5, $6, $7)
         `,
         [
           transaction.id,
           transaction.email,
-          transaction.phone,
-          transaction.package,
+          transaction.packageName,
           transaction.paymentMethod,
           transaction.amount,
           transaction.status,
-          transaction.timestamp,
+          transaction.createdAt,
         ]
       );
 
@@ -593,26 +572,8 @@ app.get('/api/transactions', async (req, res) => {
   }
 
   try {
-    const result = await pool.query(
-      `
-        SELECT
-          txn_id AS id,
-          email,
-          phone,
-          package_name AS package,
-          payment_method AS "paymentMethod",
-          amount,
-          status,
-          created_at AS timestamp
-        FROM transactions
-        WHERE email = $1
-        ORDER BY id DESC
-      `,
-      [email]
-    );
-
-    const items = result.rows.map(mapTransactionRow);
-    return res.json(items);
+    const result = await pool.query('SELECT * FROM transactions WHERE email = $1 ORDER BY id DESC', [email]);
+    return res.json(result.rows);
   } catch (error) {
     console.error('Fetch transactions failed', error);
     return res.status(500).json({ status: 'error', message: 'Database error' });
@@ -646,29 +607,13 @@ app.get('/api/transactions', async (req, res) => {
  */
 app.get('/api/transactions/:id', async (req, res) => {
   try {
-    const result = await pool.query(
-      `
-        SELECT
-          txn_id AS id,
-          email,
-          phone,
-          package_name AS package,
-          payment_method AS "paymentMethod",
-          amount,
-          status,
-          created_at AS timestamp
-        FROM transactions
-        WHERE txn_id = $1
-        LIMIT 1
-      `,
-      [req.params.id]
-    );
+    const result = await pool.query('SELECT * FROM transactions WHERE txn_id = $1 LIMIT 1', [req.params.id]);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ status: 'error', message: 'Transaction not found' });
     }
 
-    return res.json(mapTransactionRow(result.rows[0]));
+    return res.json(result.rows[0]);
   } catch (error) {
     console.error('Fetch transaction failed', error);
     return res.status(500).json({ status: 'error', message: 'Database error' });
@@ -726,15 +671,7 @@ app.put('/api/transactions/:id', async (req, res) => {
         UPDATE transactions
         SET status = $1
         WHERE txn_id = $2
-        RETURNING
-          txn_id AS id,
-          email,
-          phone,
-          package_name AS package,
-          payment_method AS "paymentMethod",
-          amount,
-          status,
-          created_at AS timestamp
+        RETURNING *
       `,
       [statusValue, req.params.id]
     );
@@ -743,7 +680,7 @@ app.put('/api/transactions/:id', async (req, res) => {
       return res.status(404).json({ status: 'error', message: 'Transaction not found' });
     }
 
-    return res.json(mapTransactionRow(result.rows[0]));
+    return res.json(result.rows[0]);
   } catch (error) {
     console.error('Update transaction failed', error);
     return res.status(500).json({ status: 'error', message: 'Database error' });
@@ -781,15 +718,7 @@ app.delete('/api/transactions/:id', async (req, res) => {
       `
         DELETE FROM transactions
         WHERE txn_id = $1
-        RETURNING
-          txn_id AS id,
-          email,
-          phone,
-          package_name AS package,
-          payment_method AS "paymentMethod",
-          amount,
-          status,
-          created_at AS timestamp
+        RETURNING *
       `,
       [req.params.id]
     );
@@ -798,7 +727,7 @@ app.delete('/api/transactions/:id', async (req, res) => {
       return res.status(404).json({ status: 'error', message: 'Transaction not found' });
     }
 
-    return res.json(mapTransactionRow(result.rows[0]));
+    return res.json(result.rows[0]);
   } catch (error) {
     console.error('Delete transaction failed', error);
     return res.status(500).json({ status: 'error', message: 'Database error' });

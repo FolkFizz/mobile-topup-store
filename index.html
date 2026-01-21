@@ -409,7 +409,7 @@
                     value="credit_card"
                     class="h-4 w-4 text-emeraldBrand-600 focus:ring-emeraldBrand-300"
                   />
-                  Credit/Debit Card
+                  Credit Card
                 </label>
                 <label
                   class="flex items-center gap-3 rounded-xl border border-emeraldBrand-100 bg-white px-4 py-3 text-sm text-emeraldBrand-900"
@@ -421,7 +421,7 @@
                     value="wallet"
                     class="h-4 w-4 text-emeraldBrand-600 focus:ring-emeraldBrand-300"
                   />
-                  Wallet Pay
+                  Wallet
                 </label>
                 <label
                   class="flex items-center gap-3 rounded-xl border border-emeraldBrand-100 bg-white px-4 py-3 text-sm text-emeraldBrand-900"
@@ -433,7 +433,7 @@
                     value="qr"
                     class="h-4 w-4 text-emeraldBrand-600 focus:ring-emeraldBrand-300"
                   />
-                  QR Code
+                  QR
                 </label>
               </div>
               <p id="error-payment" class="text-sm text-red-600 hidden">Please select a payment method.</p>
@@ -782,17 +782,17 @@
             statusValue === 'SUCCESS'
               ? 'bg-emeraldBrand-100 text-emeraldBrand-700'
               : 'bg-red-100 text-red-700';
-          const payment = getPaymentMeta(item.paymentMethod);
+          const payment = getPaymentMeta(item.payment_method);
           const row = document.createElement('tr');
-          row.id = item.id ? `history-row-${item.id}` : `history-row-${index + 1}`;
+          row.id = item.txn_id ? `history-row-${item.txn_id}` : `history-row-${index + 1}`;
           row.className = 'text-emeraldBrand-900';
           const paymentHtml = payment.icon
             ? `<span class="inline-flex items-center gap-2"><i class="${payment.icon} text-emeraldBrand-600"></i>${payment.label}</span>`
             : payment.label;
           row.innerHTML = `
-            <td class="px-3 py-3 text-xs text-emeraldBrand-700">${formatHistoryDate(item.timestamp)}</td>
-            <td class="px-3 py-3 text-xs font-semibold text-emeraldBrand-900">${item.id || '-'}</td>
-            <td class="px-3 py-3 text-xs text-emeraldBrand-800">${item.package || '-'}</td>
+            <td class="px-3 py-3 text-xs text-emeraldBrand-700">${formatHistoryDate(item.created_at)}</td>
+            <td class="px-3 py-3 text-xs font-semibold text-emeraldBrand-900">${item.txn_id || '-'}</td>
+            <td class="px-3 py-3 text-xs text-emeraldBrand-800">${item.package_name || '-'}</td>
             <td class="px-3 py-3 text-xs text-emeraldBrand-800">${paymentHtml}</td>
             <td class="px-3 py-3 text-xs text-emeraldBrand-900">${formatAmount(item.amount)}</td>
             <td class="px-3 py-3 text-xs">
