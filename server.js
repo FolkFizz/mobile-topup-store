@@ -31,8 +31,12 @@ const swaggerSpec = swaggerJsdoc({
     },
     servers: [
       {
+        url: 'https://mobile-topup-store.onrender.com',
+        description: 'Production Server (Render)',
+      },
+      {
         url: `http://localhost:${PORT}`,
-        description: 'Local server',
+        description: 'Local Development',
       },
     ],
     components: {
