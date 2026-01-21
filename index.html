@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mobile TopUp Store</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2310b981'/%3E%3Cstop offset='100%25' stop-color='%23047857'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='16' y='4' width='32' height='56' rx='8' fill='url(%23g)'/%3E%3Crect x='20' y='10' width='24' height='40' rx='4' fill='%23ecfdf5'/%3E%3Ccircle cx='32' cy='52' r='3' fill='%23d1fae5'/%3E%3Crect x='26' y='7' width='12' height='2' rx='1' fill='%23d1fae5'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['"Sora"', 'sans-serif'],
+              body: ['"Manrope"', 'sans-serif'],
+            },
+            colors: {
+              emeraldBrand: {
+                50: '#ecfdf5',
+                100: '#d1fae5',
+                200: '#a7f3d0',
+                500: '#10b981',
+                600: '#059669',
+                700: '#047857',
+                800: '#065f46',
+                900: '#064e3b',
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --emerald: #059669;
+        --emerald-dark: #065f46;
+        --emerald-light: #d1fae5;
+        --ink: #053a2d;
+        --mint: #e7f9f0;
+      }
+      body {
+        background:
+          radial-gradient(1200px 500px at 10% -20%, rgba(16, 185, 129, 0.28), transparent 60%),
+          radial-gradient(900px 400px at 110% 120%, rgba(5, 150, 105, 0.22), transparent 55%),
+          linear-gradient(180deg, #effdf5 0%, #e6f8ef 100%);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-body text-emeraldBrand-900">
+    <main class="min-h-screen flex items-stretch md:items-center justify-center px-0 md:px-6 py-0 md:py-10">
+      <section
+        class="relative w-full min-h-screen md:min-h-0 md:max-w-[480px] bg-white/95 backdrop-blur border border-emeraldBrand-100 md:rounded-3xl rounded-none shadow-[0_20px_60px_rgba(16,185,129,0.25)] overflow-hidden"
+      >
+        <div class="absolute -top-20 -right-24 h-56 w-56 rounded-full bg-emeraldBrand-200/60 blur-3xl"></div>
+        <div class="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-emeraldBrand-100/70 blur-2xl"></div>
+        <div class="h-2 bg-gradient-to-r from-emeraldBrand-600 via-emeraldBrand-500 to-lime-300"></div>
+
+        <div class="relative px-6 py-8 md:px-8 md:py-10 space-y-6">
+          <div class="flex items-center justify-between">
+            <div
+              class="inline-flex items-center gap-2 rounded-full bg-emeraldBrand-50 px-3 py-1 text-xs font-semibold tracking-wide text-emeraldBrand-700"
+            >
+              Mobile Payment Sandbox
+            </div>
+            <a
+              id="link-api-docs"
+              href="/api-docs"
+              target="_blank"
+              rel="noreferrer"
+              class="text-xs font-semibold text-emeraldBrand-700 hover:text-emeraldBrand-900"
+            >
+              📄 API Documentation
+            </a>
+          </div>
+
+          <section id="view-login" class="space-y-6">
+            <header class="space-y-2">
+              <h1 class="text-2xl md:text-3xl font-display font-bold text-emeraldBrand-900">Welcome Back</h1>
+              <p class="text-sm text-emeraldBrand-800/80">Log in to access Mobile TopUp Store.</p>
+            </header>
+            <div class="space-y-4">
+              <div>
+                <label for="username" class="text-sm font-semibold text-emeraldBrand-900">Email</label>
+                <div class="relative mt-2">
+                  <i class="fa-solid fa-user absolute left-3 top-1/2 -translate-y-1/2 text-emeraldBrand-500"></i>
+                  <input
+                    id="username"
+                    type="email"
+                    placeholder="qa@example.com"
+                    class="w-full rounded-xl border border-emeraldBrand-200 bg-white py-3 pl-10 pr-4 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                  />
+                </div>
+              </div>
+              <div>
+                <label for="password" class="text-sm font-semibold text-emeraldBrand-900">Password</label>
+                <div class="relative mt-2">
+                  <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-emeraldBrand-500"></i>
+                  <input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    class="w-full rounded-xl border border-emeraldBrand-200 bg-white py-3 pl-10 pr-4 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                  />
+                </div>
+              </div>
+              <p id="login-message" class="text-xs text-red-600 hidden"></p>
+            </div>
+            <div class="space-y-3">
+              <button
+                id="btn-login"
+                type="button"
+                class="w-full rounded-2xl bg-emeraldBrand-600 px-4 py-4 text-base font-semibold text-white shadow-lg shadow-emeraldBrand-500/30 transition hover:bg-emeraldBrand-700"
+              >
+                Login
+              </button>
+              <button
+                id="link-forgot-pass"
+                type="button"
+                class="w-full rounded-xl border border-emeraldBrand-200 bg-white px-4 py-3 text-sm font-semibold text-emeraldBrand-700 transition hover:bg-emeraldBrand-50"
+              >
+                Forgot Password?
+              </button>
+              <button
+                id="link-to-register"
+                type="button"
+                class="w-full rounded-xl border border-emeraldBrand-200 bg-emeraldBrand-50 px-4 py-3 text-sm font-semibold text-emeraldBrand-800 transition hover:bg-emeraldBrand-100"
+              >
+                Create an Account
+              </button>
+            </div>
+          </section>
+          <section id="view-register" class="space-y-6 hidden">
+            <header class="space-y-2">
+              <h1 class="text-2xl md:text-3xl font-display font-bold text-emeraldBrand-900">Create Account</h1>
+              <p class="text-sm text-emeraldBrand-800/80">Register to start a new top-up session.</p>
+            </header>
+            <div class="space-y-4">
+              <div>
+                <label for="reg-username" class="text-sm font-semibold text-emeraldBrand-900">Email</label>
+                <div class="relative mt-2">
+                  <i class="fa-solid fa-user absolute left-3 top-1/2 -translate-y-1/2 text-emeraldBrand-500"></i>
+                  <input
+                    id="reg-username"
+                    type="email"
+                    placeholder="qa@example.com"
+                    class="w-full rounded-xl border border-emeraldBrand-200 bg-white py-3 pl-10 pr-4 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                  />
+                </div>
+              </div>
+              <div>
+                <label for="reg-password" class="text-sm font-semibold text-emeraldBrand-900">Password</label>
+                <div class="relative mt-2">
+                  <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-emeraldBrand-500"></i>
+                  <input
+                    id="reg-password"
+                    type="password"
+                    placeholder="Choose a password"
+                    class="w-full rounded-xl border border-emeraldBrand-200 bg-white py-3 pl-10 pr-4 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                  />
+                </div>
+              </div>
+              <p id="register-message" class="text-xs text-red-600 hidden"></p>
+            </div>
+            <div class="space-y-3">
+              <button
+                id="btn-register"
+                type="button"
+                class="w-full rounded-2xl bg-emeraldBrand-600 px-4 py-4 text-base font-semibold text-white shadow-lg shadow-emeraldBrand-500/30 transition hover:bg-emeraldBrand-700"
+              >
+                Register
+              </button>
+              <button
+                id="link-to-login"
+                type="button"
+                class="w-full rounded-xl border border-emeraldBrand-200 bg-emeraldBrand-50 px-4 py-3 text-sm font-semibold text-emeraldBrand-800 transition hover:bg-emeraldBrand-100"
+              >
+                Back to Login
+              </button>
+            </div>
+          </section>
+          <section id="view-forgot-email" class="space-y-6 hidden">
+            <header class="space-y-2">
+              <h1 class="text-2xl md:text-3xl font-display font-bold text-emeraldBrand-900">Forgot Password</h1>
+              <p class="text-sm text-emeraldBrand-800/80">Request a one-time OTP to reset access.</p>
+            </header>
+            <div class="space-y-4">
+              <div>
+                <label for="forgot-email" class="text-sm font-semibold text-emeraldBrand-900">Email</label>
+                <div class="relative mt-2">
+                  <i class="fa-solid fa-user absolute left-3 top-1/2 -translate-y-1/2 text-emeraldBrand-500"></i>
+                  <input
+                    id="forgot-email"
+                    type="email"
+                    placeholder="qa@example.com"
+                    class="w-full rounded-xl border border-emeraldBrand-200 bg-white py-3 pl-10 pr-4 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                  />
+                </div>
+              </div>
+              <p id="forgot-message" class="text-xs text-red-600 hidden"></p>
+            </div>
+            <div class="space-y-3">
+              <button
+                id="btn-send-otp"
+                type="button"
+                class="w-full rounded-2xl bg-emeraldBrand-600 px-4 py-4 text-base font-semibold text-white shadow-lg shadow-emeraldBrand-500/30 transition hover:bg-emeraldBrand-700"
+              >
+                Send OTP
+              </button>
+              <button
+                id="btn-back-login-forgot"
+                type="button"
+                class="w-full rounded-xl border border-emeraldBrand-200 bg-emeraldBrand-50 px-4 py-3 text-sm font-semibold text-emeraldBrand-800 transition hover:bg-emeraldBrand-100"
+              >
+                Back to Login
+              </button>
+            </div>
+          </section>
+          <section id="view-forgot-otp" class="space-y-6 hidden">
+            <header class="space-y-2">
+              <h1 class="text-2xl md:text-3xl font-display font-bold text-emeraldBrand-900">Verify OTP</h1>
+              <p id="otp-info" class="text-sm text-emeraldBrand-800/80">
+                OTP sent to <span id="otp-email" class="font-semibold">-</span> (Use 1234)
+              </p>
+            </header>
+            <div class="space-y-4">
+              <div>
+                <label for="input-otp" class="text-sm font-semibold text-emeraldBrand-900">One-Time Password</label>
+                <div class="relative mt-2">
+                  <i class="fa-solid fa-shield-halved absolute left-3 top-1/2 -translate-y-1/2 text-emeraldBrand-500"></i>
+                  <input
+                    id="input-otp"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="4"
+                    placeholder="1234"
+                    class="w-full rounded-xl border border-emeraldBrand-200 bg-white py-3 pl-10 pr-4 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                  />
+                </div>
+              </div>
+              <p id="otp-message" class="text-xs text-red-600 hidden"></p>
+            </div>
+            <div class="space-y-3">
+              <button
+                id="btn-verify-otp"
+                type="button"
+                class="w-full rounded-2xl bg-emeraldBrand-600 px-4 py-4 text-base font-semibold text-white shadow-lg shadow-emeraldBrand-500/30 transition hover:bg-emeraldBrand-700"
+              >
+                Verify
+              </button>
+              <button
+                id="btn-back-login-otp"
+                type="button"
+                class="w-full rounded-xl border border-emeraldBrand-200 bg-emeraldBrand-50 px-4 py-3 text-sm font-semibold text-emeraldBrand-800 transition hover:bg-emeraldBrand-100"
+              >
+                Back to Login
+              </button>
+            </div>
+          </section>
+          <section id="view-reset-pass" class="space-y-6 hidden">
+            <header class="space-y-2">
+              <h1 class="text-2xl md:text-3xl font-display font-bold text-emeraldBrand-900">Reset Password</h1>
+              <p class="text-sm text-emeraldBrand-800/80">Set a new password to regain access.</p>
+            </header>
+            <div class="space-y-4">
+              <div>
+                <label for="new-password" class="text-sm font-semibold text-emeraldBrand-900">New Password</label>
+                <div class="relative mt-2">
+                  <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-emeraldBrand-500"></i>
+                  <input
+                    id="new-password"
+                    type="password"
+                    placeholder="Enter new password"
+                    class="w-full rounded-xl border border-emeraldBrand-200 bg-white py-3 pl-10 pr-4 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                  />
+                </div>
+              </div>
+              <p id="reset-message" class="text-xs text-red-600 hidden"></p>
+            </div>
+            <div class="space-y-3">
+              <button
+                id="btn-reset-pass"
+                type="button"
+                class="w-full rounded-2xl bg-emeraldBrand-600 px-4 py-4 text-base font-semibold text-white shadow-lg shadow-emeraldBrand-500/30 transition hover:bg-emeraldBrand-700"
+              >
+                Set New Password
+              </button>
+              <button
+                id="btn-back-login-reset"
+                type="button"
+                class="w-full rounded-xl border border-emeraldBrand-200 bg-emeraldBrand-50 px-4 py-3 text-sm font-semibold text-emeraldBrand-800 transition hover:bg-emeraldBrand-100"
+              >
+                Back to Login
+              </button>
+            </div>
+          </section>
+          <section id="view-store" class="space-y-6 hidden">
+            <header class="flex items-start justify-between gap-4">
+              <div class="space-y-1">
+                <h1 class="text-2xl md:text-3xl font-display font-bold text-emeraldBrand-900">
+                  Mobile TopUp Store
+                </h1>
+                <p class="text-sm text-emeraldBrand-800/80">Simulated Payment Gateway</p>
+                <p class="text-xs text-emeraldBrand-700">
+                  Signed in as <span id="display-user" class="font-semibold">guest</span>
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button
+                  id="btn-history"
+                  type="button"
+                  class="rounded-full border border-emeraldBrand-200 bg-emeraldBrand-50 px-4 py-2 text-xs font-semibold text-emeraldBrand-800 transition hover:bg-emeraldBrand-100"
+                >
+                  History
+                </button>
+                <button
+                  id="btn-logout"
+                  type="button"
+                  class="rounded-full border border-emeraldBrand-200 bg-white px-4 py-2 text-xs font-semibold text-emeraldBrand-800 transition hover:bg-emeraldBrand-50"
+                >
+                  Logout
+                </button>
+              </div>
+            </header>
+
+            <section class="space-y-3">
+              <h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-emeraldBrand-700">
+                Customer Details
+              </h2>
+              <div>
+                <label for="input-phone" class="text-sm font-semibold text-emeraldBrand-900">Phone Number</label>
+                <div class="relative mt-2">
+                  <i class="fa-solid fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-emeraldBrand-500"></i>
+                  <input
+                    id="input-phone"
+                    type="tel"
+                    placeholder="e.g. 0891234567"
+                    class="w-full rounded-xl border border-emeraldBrand-200 bg-white py-3 pl-10 pr-4 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                  />
+                </div>
+                <p id="error-phone" class="mt-1 text-sm text-red-600 hidden">
+                  Please enter a valid 10-digit number starting with 06, 08, or 09.
+                </p>
+              </div>
+            </section>
+            <section class="space-y-4">
+              <h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-emeraldBrand-700">
+                Package Selection
+              </h2>
+              <div>
+                <label for="select-package" class="text-sm font-semibold text-emeraldBrand-900">Package</label>
+                <select
+                  id="select-package"
+                  class="mt-2 w-full rounded-xl border border-emeraldBrand-200 bg-white px-4 py-3 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                >
+                  <option value="1199" data-name="5G Max Speed">5G Max Speed - 1,199 THB</option>
+                  <option value="1500" data-name="Super Save Marathon">Super Save Marathon - 1,500 THB</option>
+                  <option value="49" data-name="Daily Unlimited">Daily Unlimited - 49 THB</option>
+                </select>
+              </div>
+              <label
+                class="flex items-center gap-3 rounded-xl border border-emeraldBrand-100 bg-emeraldBrand-50/60 px-4 py-3 text-sm text-emeraldBrand-900"
+              >
+                <input
+                  id="check-addon-disney"
+                  type="checkbox"
+                  class="h-4 w-4 rounded border-emeraldBrand-300 text-emeraldBrand-600 focus:ring-emeraldBrand-300"
+                />
+                Add-on: Movie Package (49 THB)
+              </label>
+              <div>
+                <label for="input-discount" class="text-sm font-semibold text-emeraldBrand-900">Discount Code</label>
+                <input
+                  id="input-discount"
+                  type="text"
+                  placeholder="Try 'QA10'"
+                  class="mt-2 w-full rounded-xl border border-emeraldBrand-200 bg-white px-4 py-3 text-base text-emeraldBrand-900 shadow-sm outline-none transition focus:border-emeraldBrand-500 focus:ring-2 focus:ring-emeraldBrand-200"
+                />
+                <p id="discount-status" class="mt-1 text-xs text-emeraldBrand-700">
+                  Use QA10 or QA50 to apply a discount.
+                </p>
+              </div>
+            </section>
+            <section class="space-y-3">
+              <h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-emeraldBrand-700">
+                Payment Method
+              </h2>
+              <div id="payment-methods" class="space-y-2">
+                <label
+                  class="flex items-center gap-3 rounded-xl border border-emeraldBrand-100 bg-white px-4 py-3 text-sm text-emeraldBrand-900"
+                >
+                  <input
+                    id="payment-credit"
+                    type="radio"
+                    name="payment-method"
+                    value="credit_card"
+                    class="h-4 w-4 text-emeraldBrand-600 focus:ring-emeraldBrand-300"
+                  />
+                  Credit/Debit Card
+                </label>
+                <label
+                  class="flex items-center gap-3 rounded-xl border border-emeraldBrand-100 bg-white px-4 py-3 text-sm text-emeraldBrand-900"
+                >
+                  <input
+                    id="payment-wallet"
+                    type="radio"
+                    name="payment-method"
+                    value="wallet"
+                    class="h-4 w-4 text-emeraldBrand-600 focus:ring-emeraldBrand-300"
+                  />
+                  Wallet Pay
+                </label>
+                <label
+                  class="flex items-center gap-3 rounded-xl border border-emeraldBrand-100 bg-white px-4 py-3 text-sm text-emeraldBrand-900"
+                >
+                  <input
+                    id="payment-qr"
+                    type="radio"
+                    name="payment-method"
+                    value="qr"
+                    class="h-4 w-4 text-emeraldBrand-600 focus:ring-emeraldBrand-300"
+                  />
+                  QR Code
+                </label>
+              </div>
+              <p id="error-payment" class="text-sm text-red-600 hidden">Please select a payment method.</p>
+            </section>
+
+            <section class="space-y-3">
+              <h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-emeraldBrand-700">Terms</h2>
+              <label
+                class="flex items-center gap-3 rounded-xl border border-emeraldBrand-100 bg-emeraldBrand-50/60 px-4 py-3 text-sm text-emeraldBrand-900"
+              >
+                <input
+                  id="check-terms"
+                  type="checkbox"
+                  class="h-4 w-4 rounded border-emeraldBrand-300 text-emeraldBrand-600 focus:ring-emeraldBrand-300"
+                />
+                I agree to Terms &amp; Conditions
+              </label>
+              <p class="text-xs text-emeraldBrand-700">You must accept terms to confirm payment.</p>
+            </section>
+            <section class="space-y-3">
+              <h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-emeraldBrand-700">Bill Details</h2>
+              <div class="space-y-2 rounded-2xl border border-emeraldBrand-100 bg-emeraldBrand-50/70 px-4 py-4">
+                <div class="flex items-center justify-between text-sm text-emeraldBrand-800">
+                  <span>Subtotal</span>
+                  <span id="display-subtotal" class="font-semibold text-emeraldBrand-900">THB 0.00</span>
+                </div>
+                <div class="flex items-center justify-between text-sm text-emeraldBrand-800">
+                  <span>VAT 7%</span>
+                  <span id="display-vat" class="font-semibold text-emeraldBrand-900">THB 0.00</span>
+                </div>
+                <div class="flex items-center justify-between text-base text-emeraldBrand-900">
+                  <span class="font-semibold">Net Total</span>
+                  <span id="display-total" class="text-lg font-bold text-emeraldBrand-900">THB 0.00</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="space-y-3">
+              <h2 class="text-sm font-semibold uppercase tracking-[0.18em] text-emeraldBrand-700">Action</h2>
+              <button
+                id="btn-confirm"
+                type="button"
+                disabled
+                class="flex w-full items-center justify-center gap-3 rounded-2xl bg-emeraldBrand-600 px-4 py-4 text-base font-semibold text-white shadow-lg shadow-emeraldBrand-500/30 transition hover:bg-emeraldBrand-700 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <span
+                  id="btn-spinner"
+                  class="hidden h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"
+                ></span>
+                <span id="btn-text">Confirm Payment</span>
+              </button>
+              <p class="text-xs text-emeraldBrand-700">Transactions are simulated for QA automation practice.</p>
+            </section>
+          </section>
+          <section id="view-history" class="space-y-6 hidden">
+            <header class="flex items-start justify-between gap-4">
+              <div class="space-y-1">
+                <h1 class="text-2xl md:text-3xl font-display font-bold text-emeraldBrand-900">
+                  Transaction History
+                </h1>
+                <p class="text-sm text-emeraldBrand-800/80">Recent top-up activity</p>
+                <p class="text-xs text-emeraldBrand-700">
+                  User: <span id="history-user" class="font-semibold">-</span>
+                </p>
+              </div>
+              <button
+                id="btn-back-store"
+                type="button"
+                class="rounded-full border border-emeraldBrand-200 bg-white px-4 py-2 text-xs font-semibold text-emeraldBrand-800 transition hover:bg-emeraldBrand-50"
+              >
+                Back to Store
+              </button>
+            </header>
+
+            <div class="space-y-3 rounded-2xl border border-emeraldBrand-100 bg-white/80 p-4">
+              <div id="history-loading" class="text-sm text-emeraldBrand-700 hidden">Loading history...</div>
+              <div id="history-error" class="text-sm text-red-600 hidden"></div>
+              <div id="history-empty" class="text-sm text-emeraldBrand-700 hidden">No transactions yet.</div>
+              <div class="overflow-x-auto">
+                <table id="history-table" class="min-w-[680px] w-full text-left text-xs">
+                  <thead class="text-emeraldBrand-700 uppercase tracking-[0.12em]">
+                    <tr>
+                      <th class="px-3 py-2">Date &amp; Time</th>
+                      <th class="px-3 py-2">Transaction ID</th>
+                      <th class="px-3 py-2">Package</th>
+                      <th class="px-3 py-2">Payment</th>
+                      <th class="px-3 py-2">Amount (THB)</th>
+                      <th class="px-3 py-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="history-tbody" class="divide-y divide-emeraldBrand-100"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div
+      id="modal-overlay"
+      aria-hidden="true"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-emeraldBrand-900/40 px-6 opacity-0 pointer-events-none transition"
+    >
+      <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">        <div id="modal-success" class="hidden space-y-4 text-center">
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emeraldBrand-50">
+            <svg class="h-8 w-8 text-emeraldBrand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M8 12l2.5 2.5L16 9"></path>
+            </svg>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-lg font-semibold text-emeraldBrand-900">Payment Successful</h3>
+            <p class="text-sm text-emeraldBrand-700">
+              Txn ID: <span id="modal-txn-id" class="font-semibold text-emeraldBrand-900">-</span>
+            </p>
+          </div>
+        </div>
+
+        <div id="modal-error" class="hidden space-y-4 text-center">
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50">
+            <svg class="h-8 w-8 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M9 9l6 6M15 9l-6 6"></path>
+            </svg>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-lg font-semibold text-red-600">Payment Failed</h3>
+            <p class="text-sm text-red-600">
+              Reason: <span id="modal-error-reason" class="font-semibold text-red-700">-</span>
+            </p>
+          </div>
+        </div>
+
+        <button
+          id="btn-close-modal"
+          type="button"
+          class="mt-6 w-full rounded-xl border border-emeraldBrand-200 bg-emeraldBrand-50 px-4 py-3 text-sm font-semibold text-emeraldBrand-800 transition hover:bg-emeraldBrand-100"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const loginView = document.getElementById('view-login');
+      const registerView = document.getElementById('view-register');
+      const forgotEmailView = document.getElementById('view-forgot-email');
+      const forgotOtpView = document.getElementById('view-forgot-otp');
+      const resetPassView = document.getElementById('view-reset-pass');
+      const storeView = document.getElementById('view-store');
+      const historyView = document.getElementById('view-history');
+      const linkToRegister = document.getElementById('link-to-register');
+      const linkToLogin = document.getElementById('link-to-login');
+      const forgotLink = document.getElementById('link-forgot-pass');
+      const loginButton = document.getElementById('btn-login');
+      const registerButton = document.getElementById('btn-register');
+      const sendOtpButton = document.getElementById('btn-send-otp');
+      const verifyOtpButton = document.getElementById('btn-verify-otp');
+      const resetPassButton = document.getElementById('btn-reset-pass');
+      const historyButton = document.getElementById('btn-history');
+      const logoutButton = document.getElementById('btn-logout');
+      const backStoreButton = document.getElementById('btn-back-store');
+      const backLoginForgotButton = document.getElementById('btn-back-login-forgot');
+      const backLoginOtpButton = document.getElementById('btn-back-login-otp');
+      const backLoginResetButton = document.getElementById('btn-back-login-reset');
+      const loginEmailInput = document.getElementById('username');
+      const loginPasswordInput = document.getElementById('password');
+      const registerEmailInput = document.getElementById('reg-username');
+      const registerPasswordInput = document.getElementById('reg-password');
+      const forgotEmailInput = document.getElementById('forgot-email');
+      const otpInput = document.getElementById('input-otp');
+      const newPasswordInput = document.getElementById('new-password');
+      const loginMessage = document.getElementById('login-message');
+      const registerMessage = document.getElementById('register-message');
+      const forgotMessage = document.getElementById('forgot-message');
+      const otpMessage = document.getElementById('otp-message');
+      const resetMessage = document.getElementById('reset-message');
+      const userDisplay = document.getElementById('display-user');
+      const otpEmail = document.getElementById('otp-email');
+      const historyUser = document.getElementById('history-user');
+
+      const phoneInput = document.getElementById('input-phone');
+      const phoneError = document.getElementById('error-phone');
+      const packageSelect = document.getElementById('select-package');
+      const addonCheckbox = document.getElementById('check-addon-disney');
+      const discountInput = document.getElementById('input-discount');
+      const discountStatus = document.getElementById('discount-status');
+      const subtotalDisplay = document.getElementById('display-subtotal');
+      const vatDisplay = document.getElementById('display-vat');
+      const totalDisplay = document.getElementById('display-total');
+      const confirmButton = document.getElementById('btn-confirm');
+      const btnSpinner = document.getElementById('btn-spinner');
+      const btnText = document.getElementById('btn-text');
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalSuccess = document.getElementById('modal-success');
+      const modalError = document.getElementById('modal-error');
+      const modalTxnId = document.getElementById('modal-txn-id');
+      const modalErrorReason = document.getElementById('modal-error-reason');
+      const closeModalButton = document.getElementById('btn-close-modal');
+      const termsCheckbox = document.getElementById('check-terms');
+      const paymentError = document.getElementById('error-payment');
+      const historyTbody = document.getElementById('history-tbody');
+      const historyEmpty = document.getElementById('history-empty');
+      const historyError = document.getElementById('history-error');
+      const historyLoading = document.getElementById('history-loading');
+
+      const state = {
+        token: '',
+        currentUser: '',
+        forgotEmail: '',
+        discountRate: 0,
+        totals: { subtotal: 0, discount: 0, vat: 0, total: 0 },
+        processing: false,
+      };
+
+      const currencyFormatter = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      function formatTHB(value) {
+        return 'THB ' + currencyFormatter.format(value);
+      }
+
+      function formatHistoryDate(timestamp) {
+        return timestamp ? String(timestamp) : '-';
+      }
+
+      function formatAmount(value) {
+        return currencyFormatter.format(Number(value || 0));
+      }
+
+      function getSelectedPackageName() {
+        const option = packageSelect.options[packageSelect.selectedIndex];
+        if (!option) return '';
+        return option.dataset.name || option.textContent.trim();
+      }
+
+      function showMessage(element, message, tone) {
+        if (!element) return;
+        if (!message) {
+          element.textContent = '';
+          element.className = 'text-xs hidden';
+          return;
+        }
+        const color = tone === 'success' ? 'text-emeraldBrand-700' : 'text-red-600';
+        element.textContent = message;
+        element.className = 'text-xs ' + color;
+      }
+
+      function setView(viewName) {
+        loginView.classList.toggle('hidden', viewName !== 'login');
+        registerView.classList.toggle('hidden', viewName !== 'register');
+        forgotEmailView.classList.toggle('hidden', viewName !== 'forgot-email');
+        forgotOtpView.classList.toggle('hidden', viewName !== 'forgot-otp');
+        resetPassView.classList.toggle('hidden', viewName !== 'reset-pass');
+        storeView.classList.toggle('hidden', viewName !== 'store');
+        historyView.classList.toggle('hidden', viewName !== 'history');
+        showMessage(loginMessage, '', '');
+        showMessage(registerMessage, '', '');
+        showMessage(forgotMessage, '', '');
+        showMessage(otpMessage, '', '');
+        showMessage(resetMessage, '', '');
+        if (viewName === 'history') {
+          loadHistory();
+        }
+      }
+
+      function isValidPhone(value) {
+        return /^(06|08|09)\d{8}$/.test(value.trim());
+      }
+
+      function updatePhoneError(force) {
+        const value = phoneInput.value.trim();
+        const valid = isValidPhone(value);
+        const showError = force ? !valid : value.length > 0 && !valid;
+        phoneError.classList.toggle('hidden', !showError);
+        return valid;
+      }
+
+      function getDiscountRate(code) {
+        if (code === 'QA10') return 0.1;
+        if (code === 'QA50') return 0.5;
+        return 0;
+      }
+
+      function applyDiscountFromInput() {
+        const code = discountInput.value.trim().toUpperCase();
+        discountInput.value = code;
+        const rate = getDiscountRate(code);
+        state.discountRate = rate;
+
+        if (!code) {
+          discountStatus.textContent = 'Use QA10 or QA50 to apply a discount.';
+          discountStatus.className = 'mt-1 text-xs text-emeraldBrand-700';
+        } else if (rate > 0) {
+          discountStatus.textContent = 'Discount applied: ' + Math.round(rate * 100) + '% off.';
+          discountStatus.className = 'mt-1 text-xs text-emeraldBrand-700';
+        } else {
+          discountStatus.textContent = 'Invalid code. No discount applied.';
+          discountStatus.className = 'mt-1 text-xs text-red-600';
+        }
+
+        calculateTotals();
+      }
+
+      function calculateTotals() {
+        const packageValue = Number(packageSelect.value || 0);
+        const addonValue = addonCheckbox.checked ? 49 : 0;
+        const subtotal = packageValue + addonValue;
+        const discount = subtotal * state.discountRate;
+        const taxable = Math.max(subtotal - discount, 0);
+        const vat = taxable * 0.07;
+        const total = taxable + vat;
+
+        state.totals = { subtotal, discount, vat, total };
+        subtotalDisplay.textContent = formatTHB(subtotal);
+        vatDisplay.textContent = formatTHB(vat);
+        totalDisplay.textContent = formatTHB(total);
+      }
+
+      function getPaymentMeta(method) {
+        const lookup = {
+          credit_card: { label: 'Credit Card', icon: 'fa-regular fa-credit-card' },
+          wallet: { label: 'Wallet', icon: 'fa-solid fa-wallet' },
+          qr: { label: 'QR', icon: 'fa-solid fa-qrcode' },
+        };
+        if (lookup[method]) return lookup[method];
+        return { label: method ? method.replace(/_/g, ' ') : '-', icon: 'fa-regular fa-circle-question' };
+      }
+
+      function renderHistory(items) {
+        if (!historyTbody) return;
+        historyTbody.innerHTML = '';
+        const rows = Array.isArray(items) ? items : [];
+        if (rows.length === 0) {
+          historyEmpty.classList.remove('hidden');
+          return;
+        }
+        historyEmpty.classList.add('hidden');
+
+        rows.forEach((item, index) => {
+          const statusValue = String(item.status || 'SUCCESS').toUpperCase();
+          const badgeClass =
+            statusValue === 'SUCCESS'
+              ? 'bg-emeraldBrand-100 text-emeraldBrand-700'
+              : 'bg-red-100 text-red-700';
+          const payment = getPaymentMeta(item.paymentMethod);
+          const row = document.createElement('tr');
+          row.id = item.id ? `history-row-${item.id}` : `history-row-${index + 1}`;
+          row.className = 'text-emeraldBrand-900';
+          const paymentHtml = payment.icon
+            ? `<span class="inline-flex items-center gap-2"><i class="${payment.icon} text-emeraldBrand-600"></i>${payment.label}</span>`
+            : payment.label;
+          row.innerHTML = `
+            <td class="px-3 py-3 text-xs text-emeraldBrand-700">${formatHistoryDate(item.timestamp)}</td>
+            <td class="px-3 py-3 text-xs font-semibold text-emeraldBrand-900">${item.id || '-'}</td>
+            <td class="px-3 py-3 text-xs text-emeraldBrand-800">${item.package || '-'}</td>
+            <td class="px-3 py-3 text-xs text-emeraldBrand-800">${paymentHtml}</td>
+            <td class="px-3 py-3 text-xs text-emeraldBrand-900">${formatAmount(item.amount)}</td>
+            <td class="px-3 py-3 text-xs">
+              <span class="inline-flex rounded-full px-2 py-1 text-[10px] font-semibold ${badgeClass}">
+                ${statusValue}
+              </span>
+            </td>
+          `;
+          historyTbody.appendChild(row);
+        });
+      }
+
+      async function loadHistory() {
+        if (!historyTbody) return;
+        historyLoading.classList.remove('hidden');
+        historyError.classList.add('hidden');
+        historyEmpty.classList.add('hidden');
+        historyTbody.innerHTML = '';
+
+        if (historyUser) {
+          historyUser.textContent = state.currentUser || '-';
+        }
+
+        if (!state.currentUser) {
+          historyLoading.classList.add('hidden');
+          historyError.textContent = 'Please log in to view transaction history.';
+          historyError.classList.remove('hidden');
+          return;
+        }
+
+        try {
+          const response = await fetch(`/api/transactions?email=${encodeURIComponent(state.currentUser)}`);
+          const data = await response.json().catch(() => []);
+          if (!response.ok) {
+            historyError.textContent = data.message || 'Unable to load history.';
+            historyError.classList.remove('hidden');
+            return;
+          }
+          renderHistory(data);
+        } catch (error) {
+          historyError.textContent = 'Network error. Please try again.';
+          historyError.classList.remove('hidden');
+        } finally {
+          historyLoading.classList.add('hidden');
+        }
+      }
+      function updateConfirmState() {
+        const enabled = termsCheckbox.checked && !state.processing;
+        confirmButton.disabled = !enabled;
+        confirmButton.classList.toggle('cursor-wait', state.processing);
+      }
+
+      function setProcessing(isProcessing) {
+        state.processing = isProcessing;
+        btnSpinner.classList.toggle('hidden', !isProcessing);
+        btnText.textContent = isProcessing ? 'Processing...' : 'Confirm Payment';
+        updateConfirmState();
+      }
+
+      function showModal(type, payload) {
+        modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        modalOverlay.classList.add('opacity-100');
+        modalOverlay.setAttribute('aria-hidden', 'false');
+
+        if (type === 'success') {
+          modalSuccess.classList.remove('hidden');
+          modalError.classList.add('hidden');
+          modalTxnId.textContent = payload.txnId || '-';
+        } else {
+          modalError.classList.remove('hidden');
+          modalSuccess.classList.add('hidden');
+          modalErrorReason.textContent = payload.reason || 'Unknown error';
+        }
+      }
+
+      function hideModal() {
+        modalOverlay.classList.add('opacity-0', 'pointer-events-none');
+        modalOverlay.classList.remove('opacity-100');
+        modalOverlay.setAttribute('aria-hidden', 'true');
+      }
+
+      function getPaymentMethod() {
+        const selected = document.querySelector('input[name="payment-method"]:checked');
+        return selected ? selected.value : '';
+      }
+
+      function resetStoreForm() {
+        phoneInput.value = '';
+        updatePhoneError(false);
+        packageSelect.selectedIndex = 0;
+        addonCheckbox.checked = false;
+        discountInput.value = '';
+        discountStatus.textContent = 'Use QA10 or QA50 to apply a discount.';
+        discountStatus.className = 'mt-1 text-xs text-emeraldBrand-700';
+        state.discountRate = 0;
+        document.querySelectorAll('input[name="payment-method"]').forEach((input) => {
+          input.checked = false;
+        });
+        paymentError.classList.add('hidden');
+        termsCheckbox.checked = false;
+        setProcessing(false);
+        calculateTotals();
+      }
+
+      function resetForgotFlow() {
+        if (forgotEmailInput) forgotEmailInput.value = '';
+        if (otpInput) otpInput.value = '';
+        if (newPasswordInput) newPasswordInput.value = '';
+        state.forgotEmail = '';
+        if (otpEmail) otpEmail.textContent = '-';
+      }
+
+      function backToLogin() {
+        resetForgotFlow();
+        setView('login');
+      }
+
+      async function handleSendOtp() {
+        const email = forgotEmailInput.value.trim();
+        if (!email) {
+          showMessage(forgotMessage, 'Email is required.', 'error');
+          return;
+        }
+
+        showMessage(forgotMessage, 'Sending OTP...', 'success');
+        try {
+          const response = await fetch('/api/auth/otp/request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email }),
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            showMessage(forgotMessage, data.message || 'Unable to send OTP.', 'error');
+            return;
+          }
+          state.forgotEmail = email;
+          if (otpEmail) otpEmail.textContent = email;
+          if (otpInput) otpInput.value = '';
+          setView('forgot-otp');
+        } catch (error) {
+          showMessage(forgotMessage, 'Network error. Please try again.', 'error');
+        }
+      }
+
+      async function handleVerifyOtp() {
+        const otp = otpInput.value.trim();
+        if (!otp) {
+          showMessage(otpMessage, 'OTP is required.', 'error');
+          return;
+        }
+        if (!state.forgotEmail) {
+          showMessage(otpMessage, 'Please request OTP again.', 'error');
+          return;
+        }
+
+        showMessage(otpMessage, 'Verifying OTP...', 'success');
+        try {
+          const response = await fetch('/api/auth/otp/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: state.forgotEmail, otp }),
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            showMessage(otpMessage, data.message || 'Invalid OTP.', 'error');
+            return;
+          }
+          if (newPasswordInput) newPasswordInput.value = '';
+          setView('reset-pass');
+        } catch (error) {
+          showMessage(otpMessage, 'Network error. Please try again.', 'error');
+        }
+      }
+
+      async function handleResetPassword() {
+        const newPassword = newPasswordInput.value.trim();
+        if (!newPassword) {
+          showMessage(resetMessage, 'New password is required.', 'error');
+          return;
+        }
+        if (!state.forgotEmail) {
+          showMessage(resetMessage, 'Please restart the reset flow.', 'error');
+          return;
+        }
+
+        showMessage(resetMessage, 'Updating password...', 'success');
+        try {
+          const response = await fetch('/api/auth/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: state.forgotEmail, newPassword }),
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            showMessage(resetMessage, data.message || 'Unable to reset password.', 'error');
+            return;
+          }
+          resetForgotFlow();
+          showMessage(loginMessage, 'Password reset. Please log in.', 'success');
+          setView('login');
+        } catch (error) {
+          showMessage(resetMessage, 'Network error. Please try again.', 'error');
+        }
+      }
+
+      async function handleLogin() {
+        const email = loginEmailInput.value.trim();
+        const password = loginPasswordInput.value.trim();
+        if (!email || !password) {
+          showMessage(loginMessage, 'Email and password are required.', 'error');
+          return;
+        }
+
+        showMessage(loginMessage, 'Signing in...', 'success');
+        try {
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            showMessage(loginMessage, data.message || 'Invalid credentials.', 'error');
+            return;
+          }
+          state.token = data.token || 'mock-token';
+          state.currentUser = email;
+          userDisplay.textContent = email;
+          if (historyUser) {
+            historyUser.textContent = email;
+          }
+          resetStoreForm();
+          setView('store');
+        } catch (error) {
+          showMessage(loginMessage, 'Network error. Please try again.', 'error');
+        }
+      }
+
+      async function handleRegister() {
+        const email = registerEmailInput.value.trim();
+        const password = registerPasswordInput.value.trim();
+        if (!email || !password) {
+          showMessage(registerMessage, 'Email and password are required.', 'error');
+          return;
+        }
+
+        showMessage(registerMessage, 'Creating account...', 'success');
+        try {
+          const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            showMessage(registerMessage, data.message || 'Registration failed.', 'error');
+            return;
+          }
+          registerPasswordInput.value = '';
+          loginEmailInput.value = email;
+          showMessage(loginMessage, 'Registration successful. Please log in.', 'success');
+          setView('login');
+        } catch (error) {
+          showMessage(registerMessage, 'Network error. Please try again.', 'error');
+        }
+      }
+
+      function handleLogout() {
+        state.token = '';
+        state.currentUser = '';
+        if (historyUser) {
+          historyUser.textContent = '-';
+        }
+        loginPasswordInput.value = '';
+        resetForgotFlow();
+        setView('login');
+      }
+
+      async function handleConfirm() {
+        if (state.processing) return;
+        if (!termsCheckbox.checked) {
+          updateConfirmState();
+          return;
+        }
+        if (!state.currentUser) {
+          showModal('error', { reason: 'Please log in again.' });
+          return;
+        }
+        const phoneValid = updatePhoneError(true);
+        if (!phoneValid) {
+          phoneInput.focus();
+          return;
+        }
+        const paymentMethod = getPaymentMethod();
+        if (!paymentMethod) {
+          paymentError.classList.remove('hidden');
+          return;
+        }
+        paymentError.classList.add('hidden');
+
+        hideModal();
+        setProcessing(true);
+        try {
+          const response = await fetch('/api/topup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: state.currentUser,
+              package: getSelectedPackageName(),
+              phone: phoneInput.value.trim(),
+              amount: Number(state.totals.total.toFixed(2)),
+              paymentMethod,
+            }),
+          });
+
+          let data = {};
+          try {
+            data = await response.json();
+          } catch (error) {
+            data = {};
+          }
+
+          if (!response.ok) {
+            showModal('error', { reason: data.message || 'Gateway error' });
+            return;
+          }
+
+          showModal('success', { txnId: data.txnId });
+        } catch (error) {
+          showModal('error', { reason: 'Network error' });
+        } finally {
+          setProcessing(false);
+        }
+      }
+
+      linkToRegister.addEventListener('click', () => setView('register'));
+      linkToLogin.addEventListener('click', () => setView('login'));
+      forgotLink.addEventListener('click', () => setView('forgot-email'));
+      loginButton.addEventListener('click', handleLogin);
+      registerButton.addEventListener('click', handleRegister);
+      sendOtpButton.addEventListener('click', handleSendOtp);
+      verifyOtpButton.addEventListener('click', handleVerifyOtp);
+      resetPassButton.addEventListener('click', handleResetPassword);
+      historyButton.addEventListener('click', () => setView('history'));
+      logoutButton.addEventListener('click', handleLogout);
+      backStoreButton.addEventListener('click', () => setView('store'));
+      backLoginForgotButton.addEventListener('click', backToLogin);
+      backLoginOtpButton.addEventListener('click', backToLogin);
+      backLoginResetButton.addEventListener('click', backToLogin);
+
+      phoneInput.addEventListener('input', () => updatePhoneError(false));
+      phoneInput.addEventListener('blur', () => updatePhoneError(false));
+      packageSelect.addEventListener('change', calculateTotals);
+      addonCheckbox.addEventListener('change', calculateTotals);
+      discountInput.addEventListener('blur', applyDiscountFromInput);
+      confirmButton.addEventListener('click', handleConfirm);
+      closeModalButton.addEventListener('click', hideModal);
+      modalOverlay.addEventListener('click', (event) => {
+        if (event.target === modalOverlay) {
+          hideModal();
+        }
+      });
+      termsCheckbox.addEventListener('change', updateConfirmState);
+      document.querySelectorAll('input[name="payment-method"]').forEach((input) => {
+        input.addEventListener('change', () => paymentError.classList.add('hidden'));
+      });
+
+      calculateTotals();
+      setView('login');
+      updateConfirmState();
+    </script>
+  </body>
+</html>
