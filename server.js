@@ -25,13 +25,13 @@ const swaggerSpec = swaggerJsdoc({
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Mobile TopUp Store API',
+      title: 'Mobile Internet Service Sandbox API',
       version: '3.1.0',
       description: 'Sandbox API for QA automation practice.',
     },
     servers: [
       {
-        url: 'https://mobile-topup-store.onrender.com',
+        url: 'https://mobile-internet-service-sandbox.onrender.com',
         description: 'Production Server (Render)',
       },
       {
@@ -59,7 +59,7 @@ const swaggerSpec = swaggerJsdoc({
           },
           required: ['id', 'txn_id', 'email', 'package_name', 'payment_method', 'amount', 'status', 'created_at'],
         },
-        TopUpRequest: {
+        OrderRequest: {
           type: 'object',
           properties: {
             email: { type: 'string', example: 'qa@example.com' },
@@ -432,16 +432,16 @@ app.post('/api/auth/reset-password', async (req, res) => {
 
 /**
  * @openapi
- * /api/topup:
+ * /api/order:
  *   post:
- *     summary: Perform a top-up payment
+ *     summary: Perform a order payment
  *     description: Simulates gateway behavior for QA testing scenarios.
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/TopUpRequest'
+ *             $ref: '#/components/schemas/OrderRequest'
  *     responses:
  *       '200':
  *         description: Payment processed successfully
@@ -472,7 +472,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-app.post('/api/topup', (req, res) => {
+app.post('/api/order', (req, res) => {
   const { phone, amount, paymentMethod, email, package: packageName } = req.body || {};
   const emailValue = normalizeEmail(email);
   const phoneValue = String(phone || '').trim();
@@ -526,7 +526,7 @@ app.post('/api/topup', (req, res) => {
         amount: transaction.amount,
       });
     } catch (error) {
-      console.error('Topup insert failed', error);
+      console.error('Order transaction failed', error);
       res.status(500).json({ status: 'error', message: 'Database error' });
     }
   };
@@ -742,7 +742,7 @@ async function startServer() {
   try {
     await initDb();
     app.listen(PORT, () => {
-      console.log(`Mobile TopUp Store running on http://localhost:${PORT}`);
+      console.log(`Mobile Internet Service Sandbox running on http://localhost:${PORT}`);
     });
   } catch (error) {
     console.error('Failed to initialize database', error);

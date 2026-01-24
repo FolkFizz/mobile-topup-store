@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mobile TopUp Store</title>
+    <title>Mobile Internet Service Sandbox </title>
     <link
       rel="icon"
       type="image/svg+xml"
@@ -90,7 +90,7 @@
           <section id="view-login" class="space-y-6">
             <header class="space-y-2">
               <h1 class="text-2xl md:text-3xl font-display font-bold text-emeraldBrand-900">Welcome Back</h1>
-              <p class="text-sm text-emeraldBrand-800/80">Log in to access Mobile TopUp Store.</p>
+              <p class="text-sm text-emeraldBrand-800/80">Log in to access Mobile Internet Service Sandbox.</p>
             </header>
             <div class="space-y-4">
               <div>
@@ -311,7 +311,7 @@
             <header class="flex items-start justify-between gap-4">
               <div class="space-y-1">
                 <h1 class="text-2xl md:text-3xl font-display font-bold text-emeraldBrand-900">
-                  Mobile TopUp Store
+                  Mobile Internet Service Sandbox
                 </h1>
                 <p class="text-sm text-emeraldBrand-800/80">Simulated Payment Gateway</p>
                 <p class="text-xs text-emeraldBrand-700">
@@ -1097,7 +1097,7 @@
         hideModal();
         setProcessing(true);
         try {
-          const response = await fetch('/api/topup', {
+          const response = await fetch('/api/order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
